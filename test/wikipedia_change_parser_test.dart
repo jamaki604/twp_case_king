@@ -19,8 +19,11 @@ void main() {
   });
 
   test('This is a test to see if we can extract a word.', () {
+    final file = File('test/soup.json');
+    final string = file.readAsStringSync();
+
     final parser = WikipediaChangeParser();
-    final user = parser.getUser();
+    final user = parser.getMostRecentUser(string);
     expect(user, 'OAbot');
   });
 }
