@@ -20,8 +20,8 @@ void main() {
 
   test('This is a test to see if we can extract a word.', () {
     final parser = WikipediaChangeParser();
-    final title = parser.getTitle();
-    expect(title, 'Soup');
+    final user = parser.getUser();
+    expect(user, 'OAbot');
   });
 }
 

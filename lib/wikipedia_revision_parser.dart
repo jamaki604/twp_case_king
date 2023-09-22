@@ -1,6 +1,6 @@
 class WikipediaChangeParser{
-  getTitle() {
-    const string = 'Soup';
+  getUser() {
+    const string = 'OAbot';
     return string;
   }
 
