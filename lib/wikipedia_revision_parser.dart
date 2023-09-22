@@ -10,9 +10,14 @@ class WikipediaChangeParser{
     return username;
   }
 
-  mostRecentTimestamp(){
-    const string = '2023-09-22T01:10:09Z';
-    return string;
+  mostRecentTimestamp(String jsonData){
+    final decoded = jsonDecode(jsonData);
+    final pagesMap = decoded['query']['pages'];
+    final pageId = pagesMap.keys.first;
+    final timestamp = pagesMap[pageId]['revisions'][0]['timestamp'];
+
+
+    return timestamp;
   }
 
 

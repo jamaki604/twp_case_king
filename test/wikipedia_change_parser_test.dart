@@ -47,9 +47,13 @@ void main() {
   });
 
   test('This is a test to see if we can extract a timestamp', (){
+    final file = File('test/disney.json');
+    final string = file.readAsStringSync();
+
     final parser = WikipediaChangeParser();
-    final timestamp = parser.mostRecentTimestamp();
-    expect(timestamp, '2023-09-22T01:10:09Z');
+    final timestamp = parser.mostRecentTimestamp(string);
+    print(timestamp);
+    expect(timestamp, '2023-09-18T16:11:29Z');
   });
 }
 
