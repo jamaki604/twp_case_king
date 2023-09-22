@@ -7,10 +7,7 @@ void main() {
   test('This is a test to see if we can read the Json file', () {
     final file = File("test/soup.json");
     final string = file.readAsStringSync();
-    expect(
-        string,
-        startsWith(
-            '{"continue":{"rvcontinue":"20230607185704|1159023098","continue":"||"}'));
+    expect(string, startsWith('{"continue":{"rvcontinue":"20230607185704|1159023098","continue":"||"}'));
   });
 
   test('This is a test for word.', () {
@@ -61,9 +58,9 @@ void main() {
     final string = file.readAsStringSync();
 
     final parser = WikipediaChangeParser();
-    final timestamp = parser.secondTimestamp(string);
+    final timestamp = parser.revisionUserTimestampList(string);
     print(timestamp);
-    expect(timestamp, '2023-09-15T21:04:23Z');
+    expect(timestamp, contains('2023-09-15T21:04:23Z'));
   });
 }
 

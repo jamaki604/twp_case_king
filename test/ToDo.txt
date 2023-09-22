@@ -1,0 +1,9 @@
+//for monday
+//query[redirects} shows redirection use for check
+//for 30 elements or less use list.take(30).tolist() like this  List<T> maybeThirtyRevisionList = revisionsList.take(30).toList();
+// remove fluff and only store username and associated timestamp for output
+//if page is -1 the page doesn't exist use for check return tru ouptut page doesn't exist
+//how do we update url? test with changing json file locally i.e. localluser input
+//ui then url input
+
+//final redirect = decoded['query']['redirect'] - return true and print where redirected from
