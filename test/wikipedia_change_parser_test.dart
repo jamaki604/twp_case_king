@@ -55,6 +55,16 @@ void main() {
     print(timestamp);
     expect(timestamp, '2023-09-18T16:11:29Z');
   });
+
+  test('This is a test to see if we can extract the second timestamp', (){
+    final file = File('test/disney.json');
+    final string = file.readAsStringSync();
+
+    final parser = WikipediaChangeParser();
+    final timestamp = parser.secondTimestamp(string);
+    print(timestamp);
+    expect(timestamp, '2023-09-15T21:04:23Z');
+  });
 }
 
 
