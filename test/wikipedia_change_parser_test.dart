@@ -73,7 +73,15 @@ void main() {
     expect(redirect, startsWith('Redirected'));
   });
 
-  
+  test('This is a test to see if we can handle non-existent pages', () {
+    final file = File('test/jacobking.json');
+    final string = file.readAsStringSync();
+
+    final parser = WikipediaChangeParser();
+    final noPage = parser.pageDoesNotExist(string);
+    print(noPage);
+    expect(noPage, 'Page does not exist');
+  });
 }
 
 

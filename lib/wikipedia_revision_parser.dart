@@ -55,6 +55,19 @@ class WikipediaChangeParser {
       return "Error decoding JSON: $e";
     }
   }
+
+  pageDoesNotExist(String jsonData) {
+    final decoded = jsonDecode(jsonData);
+    final pagesMap = decoded['query']['pages'];
+    final pageId = pagesMap.keys.first;
+
+
+    if (pageId == '-1'){
+      return  'Page does not exist';
+    }else {
+      return 'page exists';
+    }
+  }
 }
 
 
