@@ -62,6 +62,18 @@ void main() {
     print(timestamp);
     expect(timestamp, contains('2023-09-15T21:04:23Z'));
   });
+
+  test('This is a test to see if we can handle redirects', () {
+    final file = File('test/disney.json');
+    final string = file.readAsStringSync();
+
+    final parser = WikipediaChangeParser();
+    final redirect = parser.didItRedirect(string);
+    print(redirect);
+    expect(redirect, startsWith('Redirected'));
+  });
+
+  
 }
 
 
