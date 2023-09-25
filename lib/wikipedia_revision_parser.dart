@@ -29,11 +29,17 @@ class WikipediaChangeParser {
     final pagesMap = decoded['query']['pages'];
     final pageId = pagesMap.keys.first;
     final revisionsList = List.from(pagesMap[pageId]['revisions']);
+    final maybeThirtyRevisionList = revisionsList.take(30).toList();
 
-    //final revisionsLength = revisionsList.length;
-    //final timestamp = pagesMap[pageId]['revisions'][i]['timestamp'];
+    final formattedList = maybeThirtyRevisionList.map((revision) {
+      final user = revision['user'];
+      final timestamp = revision['timestamp'];
+      return 'User: $user Timestamp: $timestamp';
+    }).toList();
 
-    return revisionsList;
+    final formattedString = formattedList.join('\n'); // Join with line breaks
+
+    return formattedString;
   }
 
 
@@ -49,7 +55,7 @@ class WikipediaChangeParser {
 
         return "Redirected From: $from \nTo: $to";
       } else {
-        return null; // Return null when there are no redirects.
+        return null;
       }
     } catch (e) {
       return "Error decoding JSON: $e";
@@ -60,7 +66,6 @@ class WikipediaChangeParser {
     final decoded = jsonDecode(jsonData);
     final pagesMap = decoded['query']['pages'];
     final pageId = pagesMap.keys.first;
-
 
     if (pageId == '-1'){
       return  'Page does not exist';
