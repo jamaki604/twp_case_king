@@ -53,14 +53,14 @@ void main() {
     expect(timestamp, '2023-09-18T16:11:29Z');
   });
 
-  test('This is a test to see if we can extract the second timestamp', (){
-    final file = File('test/disney.json');
+  test('This is a test to see if we can extract the user timestamp data and no more then 30', (){
+    final file = File('test/1993.json');
     final string = file.readAsStringSync();
 
     final parser = WikipediaChangeParser();
     final timestamp = parser.revisionUserTimestampList(string);
     print(timestamp);
-    expect(timestamp, contains('2023-09-15T21:04:23Z'));
+    expect(timestamp, contains('2023-08-04T13:22:13Z'));
   });
 
   test('This is a test to see if we can handle redirects', () {

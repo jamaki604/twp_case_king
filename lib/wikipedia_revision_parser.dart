@@ -23,24 +23,26 @@ class WikipediaChangeParser {
     return timestamp;
   }
 
-  revisionUserTimestampList(String jsonData) {
-    //this helped up figure out how to create list of users and timestamps
+  String revisionUserTimestampList(String jsonData) {
     final decoded = jsonDecode(jsonData);
     final pagesMap = decoded['query']['pages'];
     final pageId = pagesMap.keys.first;
     final revisionsList = List.from(pagesMap[pageId]['revisions']);
     final maybeThirtyRevisionList = revisionsList.take(30).toList();
 
-    final formattedList = maybeThirtyRevisionList.map((revision) {
+    final formattedList = maybeThirtyRevisionList.asMap().entries.map((entry) {
+      final lineNumber = entry.key + 1;
+      final revision = entry.value;
       final user = revision['user'];
       final timestamp = revision['timestamp'];
-      return 'User: $user Timestamp: $timestamp';
+      return '$lineNumber. User: $user Timestamp: $timestamp';
     }).toList();
 
     final formattedString = formattedList.join('\n'); // Join with line breaks
 
     return formattedString;
   }
+
 
 
   didItRedirect(String jsonData) {

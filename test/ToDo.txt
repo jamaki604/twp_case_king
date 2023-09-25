@@ -15,3 +15,22 @@
 
 
 //fore refactor update page does not exist to call redirect then have redirect call user list.
+
+revisionUserTimestampList(String jsonData) {
+    //this helped up figure out how to create list of users and timestamps
+    final decoded = jsonDecode(jsonData);
+    final pagesMap = decoded['query']['pages'];
+    final pageId = pagesMap.keys.first;
+    final revisionsList = List.from(pagesMap[pageId]['revisions']);
+    final maybeThirtyRevisionList = revisionsList.take(30).toList();
+
+    final formattedList = maybeThirtyRevisionList.map((revision) {
+      final user = revision['user'];
+      final timestamp = revision['timestamp'];
+      return 'User: $user Timestamp: $timestamp';
+    }).toList();
+
+    final formattedString = formattedList.join('\n'); // Join with line breaks
+
+    return formattedString;
+  }
