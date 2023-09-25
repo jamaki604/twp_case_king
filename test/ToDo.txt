@@ -1,15 +1,21 @@
-//for monday
+//for tuesday
+
+//clean up Parser class
+//ui
+//input field test with changing json file locally i.e.
+        localluser input dont start with url, start with updating test/---.json
+        call then print info
 
 
-//how do we update url? test with changing json file locally i.e. localluser input
-
-//ui then url input
-
+//URL input
+//how do we update url?
 // see this for URL input info -
 //  https://stackoverflow.com/questions/67314757/how-to-parse-the-json-response-from-url-in-flutter
 
-//final redirect = decoded['query']['redirect'] - return true and print where redirected from
 
 
-//fore refactor update page does not exist to call redirect then have redirect call user list.
+//check srp
+//check clean code
+//checklist on class website
+//recheck all requirements
 
