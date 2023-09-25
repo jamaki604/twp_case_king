@@ -35,15 +35,13 @@ class WikipediaChangeParser {
       final revision = entry.value;
       final user = revision['user'];
       final timestamp = revision['timestamp'];
-      return '$lineNumber. User: $user Timestamp: $timestamp';
+      return '\n$lineNumber. User: $user \n     Timestamp: $timestamp';
     }).toList();
 
-    final formattedString = formattedList.join('\n'); // Join with line breaks
+    final formattedString = formattedList.join('\n');
 
     return formattedString;
   }
-
-
 
   didItRedirect(String jsonData) {
     try {
@@ -74,6 +72,21 @@ class WikipediaChangeParser {
     }else {
       return 'page exists';
     }
+  }
+
+  allTogetherNow(String jsonData){
+    final decoded = jsonDecode(jsonData);
+    final pagesMap = decoded['query']['pages'];
+    final pageId = pagesMap.keys.first;
+
+    if (pageId == '-1'){
+      return  'Page does not exist';
+    }else {
+      final result = didItRedirect(jsonData);
+      print(result);
+    }
+    final userTimestampList = revisionUserTimestampList(jsonData);
+    return userTimestampList;
   }
 }
 

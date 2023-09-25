@@ -82,6 +82,16 @@ void main() {
     print(noPage);
     expect(noPage, 'Page does not exist');
   });
+
+  test('This is a test to see if we can checkbox everything but network error', () {
+    final file = File('test/disney.json');
+    final string = file.readAsStringSync();
+
+    final parser = WikipediaChangeParser();
+    final workPlease = parser.allTogetherNow(string);
+    print(workPlease);
+    expect(workPlease, contains('2023-09-18T16:11:29Z'));
+  });
 }
 
 
