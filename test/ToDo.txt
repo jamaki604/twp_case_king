@@ -1,10 +1,14 @@
 //for tuesday
 
-//clean up Parser class
+//clean up Parser class - make 1 method (hopefully)
+Create URL Class
+Creater revision reporter
 //ui
 //input field test with changing json file locally i.e.
         localluser input dont start with url, start with updating test/---.json
         call then print info
+
+Parse timestamp - revision reporter
 
 
 //URL input
