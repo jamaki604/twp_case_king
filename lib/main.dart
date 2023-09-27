@@ -35,18 +35,22 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  String displayedText = 'test';
+  final wikipediaPageController = TextEditingController();
   final queryUpdater = QueryUpdater();
   final revisionParser = WikipediaRevisionParser();
-  final wikipediaPageController = TextEditingController();
 
-  void revisionListPrinter() async {
+  Future<void> handleButtonPress() async {
+    final result = await revisionListPrinter();
+    setState(() {
+      displayedText = result;
+    });
+  }
+
+  Future<String> revisionListPrinter() async {
     final pageName = wikipediaPageController.text;
-    final urlGenerator = QueryUpdater();
-    final wikipediaData = await urlGenerator.wikipediaPageURL(pageName);
-    final parser = WikipediaRevisionParser();
-    final revisionList = parser.allTogetherNow(wikipediaData);
-
-    return revisionList;
+    final wikipediaData = await queryUpdater.wikipediaPageURL(pageName);
+    return revisionParser.allTogetherNow(wikipediaData);
   }
 
 
@@ -83,6 +87,8 @@ class _MyHomePageState extends State<MyHomePage> {
             SizedBox(
               width: 345,
               child: TextField(
+                controller: wikipediaPageController,
+                keyboardType: TextInputType.text,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: "Wikipedia Page Name goes here",
@@ -94,14 +100,18 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             const SizedBox(height: 20),
-            const ElevatedButton(
-              onPressed: startHammering,
-              child: Text('Submit'),
+            ElevatedButton(
+              onPressed: handleButtonPress,
+              child: const Text('Submit'),
             ),
-            const SizedBox(height: 20,),
-            const Text(
-              'something will go here',
-              style: TextStyle(fontSize: 24),
+            Container(
+              padding: const EdgeInsets.all(10),  // Optional padding for aesthetics.
+              child: SingleChildScrollView(
+                child: Text(
+                  displayedText,
+                  style: const TextStyle(fontSize: 24),
+                ),
+              ),
             )
           ],
         ),
@@ -112,6 +122,3 @@ class _MyHomePageState extends State<MyHomePage> {
 
 }
 
-void startHammering() {
-  print('bang bang bang');
-}
