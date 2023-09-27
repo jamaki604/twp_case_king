@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-class WikipediaChangeParser {
+class WikipediaRevisionParser {
 
   final i = 0;
 
@@ -30,7 +30,11 @@ class WikipediaChangeParser {
     final revisionsList = List.from(pagesMap[pageId]['revisions']);
     final maybeThirtyRevisionList = revisionsList.take(30).toList();
 
-    final formattedList = maybeThirtyRevisionList.asMap().entries.map((entry) {
+
+    final formattedList = maybeThirtyRevisionList
+        .asMap()
+        .entries
+        .map((entry) {
       final lineNumber = entry.key + 1;
       final revision = entry.value;
       final user = revision['user'];
@@ -55,7 +59,7 @@ class WikipediaChangeParser {
 
         return "Redirected From: $from \nTo: $to";
       } else {
-        return null;
+        return 'There was no redirect';
       }
     } catch (e) {
       return "Error decoding JSON: $e";
@@ -67,27 +71,32 @@ class WikipediaChangeParser {
     final pagesMap = decoded['query']['pages'];
     final pageId = pagesMap.keys.first;
 
-    if (pageId == '-1'){
-      return  'Page does not exist';
-    }else {
+    if (pageId == '-1') {
+      return 'Page does not exist';
+    } else {
       return 'page exists';
     }
   }
 
-  allTogetherNow(String jsonData){
+  allTogetherNow(String jsonData) {
     final decoded = jsonDecode(jsonData);
     final pagesMap = decoded['query']['pages'];
     final pageId = pagesMap.keys.first;
 
-    if (pageId == '-1'){
-      return  'Page does not exist';
-    }else {
+    if (pageId == '-1') {
+      return 'Page does not exist';
+    } else {
       final result = didItRedirect(jsonData);
       print(result);
     }
     final userTimestampList = revisionUserTimestampList(jsonData);
     return userTimestampList;
   }
+
+
+
+
 }
+
 
 
