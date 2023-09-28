@@ -30,7 +30,6 @@ class WikipediaRevisionParser {
     final revisionsList = List.from(pagesMap[pageId]['revisions']);
     final maybeThirtyRevisionList = revisionsList.take(30).toList();
 
-
     final formattedList = maybeThirtyRevisionList
         .asMap()
         .entries
@@ -39,13 +38,16 @@ class WikipediaRevisionParser {
       final revision = entry.value;
       final user = revision['user'];
       final timestamp = revision['timestamp'];
-      return '\n$lineNumber. User: $user \n     Timestamp: $timestamp';
+      final formattedTimestamp = DateTime.parse(timestamp).toUtc().toIso8601String();
+
+      return '\n$lineNumber. User: $user \n     Timestamp: $formattedTimestamp';
     }).toList();
 
     final formattedString = formattedList.join('\n');
 
     return formattedString;
   }
+
 
   didItRedirect(String jsonData) {
     try {
@@ -85,12 +87,14 @@ class WikipediaRevisionParser {
 
     if (pageId == '-1') {
       return 'Page does not exist';
-    } else {
-      final result = didItRedirect(jsonData);
-      print(result);
-    }
+    }else if (pageId != '1'){
+    final result = didItRedirect (jsonData);
+    final userTimestampList = revisionUserTimestampList(jsonData);
+    return result + '\n' + userTimestampList;
+  }else {
     final userTimestampList = revisionUserTimestampList(jsonData);
     return userTimestampList;
+    }
   }
 
 

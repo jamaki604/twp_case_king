@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:twp_case_king/query_updater.dart';
 import 'package:twp_case_king/wikipedia_revision_parser.dart';
+import 'dart:io';
 
 void main() {
   runApp(const MyApp());
@@ -35,16 +36,28 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String displayedText = 'test';
+  String displayedText = '';
   final wikipediaPageController = TextEditingController();
   final queryUpdater = QueryUpdater();
   final revisionParser = WikipediaRevisionParser();
 
   Future<void> handleButtonPress() async {
-    final result = await revisionListPrinter();
-    setState(() {
-      displayedText = result;
-    });
+    try {
+      final result = await revisionListPrinter();
+      setState(() {
+        displayedText = result;
+      });
+    } catch (error) {
+      if (error is SocketException || error is HttpException) {
+        setState(() {
+          displayedText = "There was a network error";
+        });
+      } else {
+        setState(() {
+          displayedText = "An error occurred: $error";
+        });
+      }
+    }
   }
 
   Future<String> revisionListPrinter() async {
@@ -58,67 +71,58 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
-        backgroundColor: Theme
-            .of(context)
-            .colorScheme
-            .inversePrimary,
-
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              padding: const EdgeInsets.all(10.0),
-              color: Colors.teal,
-              child: const Text(
-                'Enter the wikipedia page for a user revision list',
-                style: TextStyle(
-                  fontSize: 24,
-                  color: Colors.white,
+      body: SingleChildScrollView( // <-- Wrap with SingleChildScrollView
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                padding: const EdgeInsets.all(10.0),
+                color: Colors.teal,
+                child: const Text(
+                  'Enter the wikipedia page for a user revision list',
+                  style: TextStyle(
+                    fontSize: 24,
+                    color: Colors.white,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 10),
-            SizedBox(
-              width: 345,
-              child: TextField(
-                controller: wikipediaPageController,
-                keyboardType: TextInputType.text,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: "Wikipedia Page Name goes here",
+              const SizedBox(height: 10),
+              SizedBox(
+                width: 345,
+                child: TextField(
+                  controller: wikipediaPageController,
+                  keyboardType: TextInputType.text,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: "Wikipedia Page Name goes here",
+                  ),
+                  style: Theme.of(context).textTheme.titleLarge,
                 ),
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .titleLarge,
               ),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: handleButtonPress,
-              child: const Text('Submit'),
-            ),
-            Container(
-              padding: const EdgeInsets.all(10),  // Optional padding for aesthetics.
-              child: SingleChildScrollView(
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: handleButtonPress,
+                child: const Text('Submit'),
+              ),
+              Container(
+                padding: const EdgeInsets.all(10),  // Optional padding for aesthetics.
                 child: Text(
                   displayedText,
                   style: const TextStyle(fontSize: 24),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
-
     );
   }
+
 
 }
 
