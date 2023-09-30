@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:twp_case_king/query_updater.dart';
-import 'package:twp_case_king/wikipedia_revision_parser.dart';
+import 'package:twp_case_king/wikipedia_query_parser.dart';
 import 'dart:io';
 
 void main() {
