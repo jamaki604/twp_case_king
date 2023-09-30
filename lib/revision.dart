@@ -1,6 +1,15 @@
-class revision {
-  String username;
-  String timestamp;
+class Revision {
+  final String _userName;
+  final String _timeStamp;
 
-  revision(this.username, this.timestamp);
+  Revision(this._userName, this._timeStamp);
+
+  String get timeStamp {
+    return _timeStamp;
+  }
+
+  String get username {
+    return _userName;
+  }
+
 }

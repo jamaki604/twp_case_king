@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:twp_case_king/query_updater.dart';
+import 'package:twp_case_king/revision.dart';
 import 'package:twp_case_king/wikipedia_revision_parser.dart';
 
 void main() {
@@ -17,13 +18,18 @@ void main() {
     expect(string, 'word');
   });
 
-  test('This is a test to see if we can extract a user.', () {
+  test('The first revision can be parsed from the json.', () {
     final file = File('test/soup.json');
     final string = file.readAsStringSync();
 
     final parser = WikipediaRevisionParser();
-    final user = parser.mostRecentUser(string);
-    expect(user, 'OAbot');
+    final List<Revision> revision = parser.mostRecentRevision(string);
+
+    for (Revision r in revision) {
+      print('Username: ${r.username}, Timestamp: ${r.timeStamp}');
+    }
+
+    expect(revision[0].username, 'OAbot');
   });
 
   test(
@@ -32,7 +38,7 @@ void main() {
     final string = file.readAsStringSync();
 
     final parser = WikipediaRevisionParser();
-    final user = parser.mostRecentUser(string);
+    final user = parser.mostRecentRevision(string);
     expect(user, 'Squared.Circle.Boxing');
   });
 
@@ -42,7 +48,7 @@ void main() {
     final string = file.readAsStringSync();
 
     final parser = WikipediaRevisionParser();
-    final user = parser.mostRecentUser(string);
+    final user = parser.mostRecentRevision(string);
     print(user);
     expect(user, 'The Herald');
   });

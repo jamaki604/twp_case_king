@@ -1,16 +1,27 @@
 import 'dart:convert';
 
+import 'package:twp_case_king/revision.dart';
+
 class WikipediaRevisionParser {
 
   final i = 0;
 
-  mostRecentUser(String jsonData) {
+  mostRecentRevision(String jsonData) {
     final decoded = jsonDecode(jsonData);
     final pagesMap = decoded['query']['pages'];
     final pageId = pagesMap.keys.first;
-    final username = pagesMap[pageId]['revisions'][0]['user'];
+    final revisionJson = pagesMap[pageId]['revisions'];
 
-    return username;
+    List<Revision> Revisions = [];
+
+    for (int i = 0; i < revisionJson.length; i++) {
+      final object = revisionJson[i];
+      final Revision revision = new Revision(object['user'], object['timestamp']);
+      Revisions.add(revision);
+    }
+
+    return Revisions;
+
   }
 
   mostRecentTimestamp(String jsonData) {

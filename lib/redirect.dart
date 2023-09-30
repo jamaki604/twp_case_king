@@ -1,6 +1,15 @@
-class redirect{
-String from;
-String to;
+class Redirect{
+  final String _from;
+  final String _to;
 
-redirect(this.from, this.to);
+  Redirect(this._from, this._to);
+
+  String get from {
+    return _from;
+  }
+
+  String get to {
+    return _to;
+  }
+
 }
