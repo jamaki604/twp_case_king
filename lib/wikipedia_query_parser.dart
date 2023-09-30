@@ -33,7 +33,7 @@ class WikipediaRevisionParser {
 
     for (int i = 0; i < revisionJson.length; i++) {
       final object = revisionJson[i];
-      final Revision revision = new Revision(object['user'], object['timestamp']);
+      final Revision revision = new Revision(object['user'], DateTime.parse(object['timestamp']));
       Revisions.add(revision);
     }
 
