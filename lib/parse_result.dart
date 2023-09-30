@@ -8,8 +8,6 @@ class ParseResult {
 
   ParseResult(this._revisions, this._redirect, this.pageExists);
 
-
-
   Redirect? get redirect => _redirect;
 
   List<Revision> get revisions => _revisions;
