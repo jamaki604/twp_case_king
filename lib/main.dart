@@ -42,10 +42,17 @@ class _MyHomePageState extends State<MyHomePage> {
   final wikipediaPageController = TextEditingController();
   final queryUpdater = QueryUpdater();
   final revisionParser = WikipediaRevisionParser();
+  bool isLoading = false;
+
 
 
   Future<void> handleButtonPress() async {
     try {
+      setState(() {
+        isLoading = true;
+        displayedText = '';
+      });
+
       final result = await revisionListPrinter();
 
       setState(() {
@@ -53,11 +60,11 @@ class _MyHomePageState extends State<MyHomePage> {
           displayedText = "Page does not exist.";
         } else {
           if (result.redirect != null) {
-            displayedText = "Redirected from ${result.redirect!.from} to ${result.redirect!.to}.\n";
-
+            displayedText = "Redirected from \"${result.redirect!.from}\" to \"${result.redirect!.to}\".\n";
           }
           displayedText += formatRevisions(result.revisions);
         }
+        isLoading = false;
       });
     } catch (error) {
       if (error is SocketException || error is HttpException) {
@@ -68,6 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
         setState(() {
           displayedText = "An error occurred: $error";
         });
+        isLoading = false;
       }
     }
   }
@@ -77,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final int length = revisions.length > 30 ? 30 : revisions.length;
     String result = '';
     for (int i = 0; i < length; i++) {
-      result += "${i + 1}. Username: ${revisions[i].username}, Timestamp: ${revisions[i].timeStamp}\n";
+      result += "\n${i + 1}. Username: ${revisions[i].username}, \nTimestamp: ${revisions[i].timeStamp}\n";
     }
     return result;
   }
@@ -118,6 +126,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: TextField(
                   controller: wikipediaPageController,
                   keyboardType: TextInputType.text,
+                  enabled: !isLoading,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: "Wikipedia Page Name goes here",
@@ -127,7 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: handleButtonPress,
+                onPressed: isLoading ? null : handleButtonPress,
                 child: const Text('Submit'),
               ),
               Container(
