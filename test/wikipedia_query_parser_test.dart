@@ -15,10 +15,6 @@ void main() {
     final ParseResult result = parser.parseQuery(string);
     final List<Revision> revision = result.revisions;
 
-    for (Revision r in revision) {
-      print('Username: ${r.username}, Timestamp: ${r.timeStamp}');
-    }
-
     expect(revision[0].username, 'OAbot');
   });
 
@@ -29,10 +25,6 @@ void main() {
     final parser = WikipediaRevisionParser();
     final ParseResult result = parser.parseQuery(string);
     final Redirect? redirect = result.redirect;
-
-    if (redirect != null) {
-      print('Redirect From: ${redirect.from}, Redirect To: ${redirect.to}');
-    }
 
     expect(redirect?.to, "The Walt Disney Company");
   });
