@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:twp_case_king/parse_result.dart';
-import 'package:twp_case_king/query_updater.dart';
+import 'package:twp_case_king/wikipedia_query_service.dart';
 import 'package:twp_case_king/revision.dart';
 import 'package:twp_case_king/wikipedia_query_parser.dart';
 import 'dart:io';
@@ -40,7 +40,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   String displayedText = '';
   final wikipediaPageController = TextEditingController();
-  final queryUpdater = QueryUpdater();
+  final queryUpdater = WikipediaQueryService();
   final revisionParser = WikipediaRevisionParser();
   bool isLoading = false;
 
@@ -91,7 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
   Future<ParseResult> revisionListPrinter() async {
     final pageName = wikipediaPageController.text;
-    final wikipediaData = await queryUpdater.wikipediaPageURL(pageName);
+    final wikipediaData = await queryUpdater.fetchWikipediaPageData(pageName);
     return revisionParser.parseQuery(wikipediaData);
   }
 

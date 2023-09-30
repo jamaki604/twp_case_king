@@ -1,7 +1,7 @@
 import 'package:http/http.dart' as http;
 
-class QueryUpdater {
-  Future<String> wikipediaPageURL(String searchTerm) async {
+class WikipediaQueryService {
+  Future<String> fetchWikipediaPageData(String searchTerm) async {
     final searchResult = await http.get(Uri.parse(
         'https://en.wikipedia.org/w/api.php?action=query&format=json&prop=revisions&titles=$searchTerm&rvprop=timestamp|user&rvlimit=30&redirects'));
 
