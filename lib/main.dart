@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:twp_case_king/parse_result.dart';
 import 'package:twp_case_king/query_updater.dart';
+import 'package:twp_case_king/revision.dart';
 import 'package:twp_case_king/wikipedia_query_parser.dart';
 import 'dart:io';
 
@@ -14,7 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Wikipedia Page Investigator',
       theme: ThemeData(
 
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
@@ -41,11 +43,21 @@ class _MyHomePageState extends State<MyHomePage> {
   final queryUpdater = QueryUpdater();
   final revisionParser = WikipediaRevisionParser();
 
+
   Future<void> handleButtonPress() async {
     try {
       final result = await revisionListPrinter();
+
       setState(() {
-        displayedText = result;
+        if (!result.pageExists) {
+          displayedText = "Page does not exist.";
+        } else {
+          if (result.redirect != null) {
+            displayedText = "Redirected from ${result.redirect!.from} to ${result.redirect!.to}.\n";
+
+          }
+          displayedText += formatRevisions(result.revisions);
+        }
       });
     } catch (error) {
       if (error is SocketException || error is HttpException) {
@@ -60,10 +72,19 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  Future<String> revisionListPrinter() async {
+
+  String formatRevisions(List<Revision> revisions) {
+    final int length = revisions.length > 30 ? 30 : revisions.length;
+    String result = '';
+    for (int i = 0; i < length; i++) {
+      result += "${i + 1}. Username: ${revisions[i].username}, Timestamp: ${revisions[i].timeStamp}\n";
+    }
+    return result;
+  }
+  Future<ParseResult> revisionListPrinter() async {
     final pageName = wikipediaPageController.text;
     final wikipediaData = await queryUpdater.wikipediaPageURL(pageName);
-    return revisionParser.allTogetherNow(wikipediaData);
+    return revisionParser.parseQuery(wikipediaData);
   }
 
 
